@@ -21,13 +21,9 @@ resource "aws_ecr_repository" "scanner" {
   }
 }
 
-resource "aws_s3_bucket" "reports" {
-  bucket        = "pr-bot-reports-${data.aws_caller_identity.current.account_id}"
-  force_destroy = true
-}
 
 resource "aws_s3_bucket_public_access_block" "reports" {
-  bucket                  = aws_s3_bucket.reports.id
+  bucket                  = local.report_bucket
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
@@ -35,7 +31,7 @@ resource "aws_s3_bucket_public_access_block" "reports" {
 }
 
 resource "aws_s3_bucket_versioning" "reports" {
-  bucket = aws_s3_bucket.reports.id
+  bucket = local.report_bucket
   versioning_configuration {
     status = "Enabled"
   }
@@ -86,7 +82,7 @@ resource "aws_ecs_task_definition" "scanner" {
     image       = local.scanner_image
     essential   = true
     stopTimeout = 30
-    environment = [{ name = "REPORT_BUCKET", value = aws_s3_bucket.reports.bucket }]
+    environment = [{ name = "REPORT_BUCKET", value = local.report_bucket }]
     logConfiguration = {
       logDriver = "awslogs"
       options = {
@@ -103,7 +99,7 @@ output "ecr_repository_url" {
 }
 
 output "report_bucket" {
-  value = aws_s3_bucket.reports.bucket
+  value = local.report_bucket
 }
 
 output "run_task_test_command" {
@@ -114,4 +110,11 @@ output "run_task_test_command" {
     "--network-configuration 'awsvpcConfiguration={subnets=[${data.aws_subnets.default.ids[0]}],securityGroups=[${aws_security_group.scanner.id}],assignPublicIp=ENABLED}'",
     "--overrides file://overrides.json",
   ])
+}
+ 
+# Learner Lab's service control policy denies s3:GetBucketObjectLockConfiguration,
+# which the aws_s3_bucket resource needs. So the bucket is created with the CLI,
+# and Terraform manages only its public access block and versioning.
+locals {
+  report_bucket = "pr-bot-reports-${data.aws_caller_identity.current.account_id}"
 }

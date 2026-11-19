@@ -8,7 +8,7 @@ terraform {
 
   # Bucket is created once with the CLI (step 3 in the instructions).
   backend "s3" {
-    bucket       = "REPLACE-ME-pr-bot-tfstate"
+    bucket       = "pr-bot-tfstate-192507631646"
     key          = "pr-security-bot/terraform.tfstate"
     region       = "us-east-1"
     use_lockfile = true
