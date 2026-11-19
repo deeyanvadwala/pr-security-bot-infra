@@ -1,0 +1,8 @@
+cat > .gitignore << 'EOF'
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform/build/
+*.zip
+.env
+EOF

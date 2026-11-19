@@ -1,0 +1,11 @@
+{
+  "containerOverrides": [{
+    "name": "scanner",
+    "environment": [
+      {"name": "REPO", "value": "REPLACE-OWNER/REPLACE-TEST-REPO"},
+      {"name": "CLONE_URL", "value": "https://github.com/REPLACE-OWNER/REPLACE-TEST-REPO.git"},
+      {"name": "COMMIT_SHA", "value": "REPLACE-WITH-A-COMMIT-SHA"},
+      {"name": "PR_NUMBER", "value": "1"}
+    ]
+  }]
+}
