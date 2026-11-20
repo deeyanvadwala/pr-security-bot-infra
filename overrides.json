@@ -1,11 +1,5 @@
-{
-  "containerOverrides": [{
-    "name": "scanner",
-    "environment": [
-      {"name": "REPO", "value": "REPLACE-OWNER/REPLACE-TEST-REPO"},
-      {"name": "CLONE_URL", "value": "https://github.com/REPLACE-OWNER/REPLACE-TEST-REPO.git"},
-      {"name": "COMMIT_SHA", "value": "REPLACE-WITH-A-COMMIT-SHA"},
-      {"name": "PR_NUMBER", "value": "1"}
-    ]
-  }]
-}
+{"containerOverrides":[{"name":"scanner","environment":[
+{"name":"REPO","value":"kenil6413/pr-bot-test"},
+{"name":"CLONE_URL","value":"https://github.com/kenil6413/pr-bot-test.git"},
+{"name":"COMMIT_SHA","value":"69e787324348323c1d68a88d9d2c3c8d5719dca2"},
+{"name":"PR_NUMBER","value":"1"}]}]}
